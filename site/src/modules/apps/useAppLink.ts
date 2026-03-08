@@ -25,6 +25,7 @@ type AppLink = {
 	onClick: (e: React.MouseEvent) => void;
 	label: string;
 	hasToken: boolean;
+	hasInvalidUrl: boolean;
 };
 
 export const useAppLink = (
@@ -38,13 +39,16 @@ export const useAppLink = (
 		enabled: isExternalApp(app) && needsSessionToken(app),
 	});
 
-	const href = getAppHref(app, {
+	const hrefOrNull = getAppHref(app, {
 		agent,
 		workspace,
 		token: apiKeyResponse?.key,
 		path: proxy.preferredPathAppURL,
 		host: proxy.preferredWildcardHostname,
 	});
+
+	const hasInvalidUrl = hrefOrNull === null;
+	const href = hrefOrNull ?? "";
 
 	const onClick = (e: React.MouseEvent) => {
 		if (!e.currentTarget.getAttribute("href")) {
@@ -112,5 +116,6 @@ export const useAppLink = (
 		onClick,
 		label,
 		hasToken: !!apiKeyResponse?.key,
+		hasInvalidUrl,
 	};
 };

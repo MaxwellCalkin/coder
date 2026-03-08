@@ -47,6 +47,7 @@ import { useAuthenticated } from "hooks";
 import { useClickableTableRow } from "hooks/useClickableTableRow";
 import {
 	BanIcon,
+	CircleAlertIcon,
 	CloudIcon,
 	EllipsisVertical,
 	ExternalLinkIcon,
@@ -772,6 +773,24 @@ const IconAppLink: FC<IconAppLinkProps> = ({ app, workspace, agent }) => {
 		workspace,
 		agent,
 	});
+
+	if (link.hasInvalidUrl) {
+		return (
+			<TooltipProvider>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button variant="outline" size="icon-lg" disabled>
+							<CircleAlertIcon className="size-icon-sm text-content-warning" />
+							<span className="sr-only">{link.label}</span>
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent>
+						Invalid app URL. Contact the template author.
+					</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
+		);
+	}
 
 	return (
 		<BaseIconLink

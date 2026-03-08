@@ -109,6 +109,18 @@ export const AppLink: FC<AppLinkProps> = ({
 		);
 	}
 
+	if (link.hasInvalidUrl) {
+		canClick = false;
+		icon = (
+			<CircleAlertIcon
+				aria-hidden="true"
+				className="size-icon-sm text-content-warning"
+			/>
+		);
+		primaryTooltip =
+			"This app has an invalid URL and cannot be opened. Contact the template author to fix the app URL.";
+	}
+
 	if (isExternalApp(app) && needsSessionToken(app) && !link.hasToken) {
 		canClick = false;
 	}
